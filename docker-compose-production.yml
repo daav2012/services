@@ -1,13 +1,10 @@
 version: "3.8"
-#
+
 volumes:
   vol-emqx-data:
     name: foo-emqx-data
-#  vol-emqx-etc:
-#    name: foo-emqx-etc
   vol-emqx-log:
     name: foo-emqx-log
-#
 
 
 services:
@@ -18,7 +15,7 @@ services:
     restart: always
     working_dir: /home/node/app
     volumes:
-      - ./mycode/index.js:/home/node/app/index.js
+      - ./app/:/home/node/app
     ports:
       - "3000:3000"
       - "3001:3001"
@@ -28,12 +25,15 @@ services:
       - emqx
       - mongo
 
-    command: sh -c "node index.js"
+    command: sh -c "echo 'delaying 30 seconds' && sleep 30 && npm run start"
+    #command: sh -c "npm install"
 
   mongo:
     container_name: mongo
     image: mongo:4.4
     restart: always
+    logging:
+      driver: "none"
     environment:
       TZ: "${TZ}"
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_USERNAME}"
@@ -47,19 +47,18 @@ services:
     container_name: emqx
     image: emqx/emqx:4.2.3
     restart: always
+
     ports:
       - 18083:18083
       - 1883:1883
-      - 8883:8883
       - 8083:8083
       - 8085:8081
 
     volumes:
       - vol-emqx-data:/opt/emqx/data
       - vol-emqx-log:/opt/emqx/log
-      -          
-    #
 
+  
     links:
       - mongo
 
