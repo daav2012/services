@@ -59,7 +59,7 @@ services:
   
       - vol-emqx-log:/opt/emqx/log
      
-    #
+   
 
     links:
       - mongo
