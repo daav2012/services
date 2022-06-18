@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 #
 volumes:
   vol-emqx-data:
@@ -56,9 +56,9 @@ services:
 
     volumes:
       - vol-emqx-data:/opt/emqx/data
-    #   - vol-emqx-etc:/opt/emqx/etc
+  
       - vol-emqx-log:/opt/emqx/log
-      -             :/app/index.js
+     
     #
 
     links:
