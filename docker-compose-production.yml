@@ -12,7 +12,7 @@ services:
   node:
     container_name: node
     image: "node:14"
-    
+    restart: always
     working_dir: /home/node/app
     volumes:
       - ./app/:/home/node/app
@@ -25,13 +25,15 @@ services:
       - emqx
       - mongo
 
-    command: sh -c "npm run build && npm run start"
+    command: sh -c "echo 'delaying 30 seconds' && sleep 30 && npm run start"
     #command: sh -c "npm install"
 
   mongo:
     container_name: mongo
     image: mongo:4.4
-    
+    restart: always
+    logging:
+      driver: "none"
     environment:
       TZ: "${TZ}"
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_USERNAME}"
@@ -44,8 +46,7 @@ services:
   emqx:
     container_name: emqx
     image: emqx/emqx:4.2.3
-    expose:
-      - 8085
+    restart: always
 
     ports:
       - 18083:18083
@@ -57,7 +58,7 @@ services:
       - vol-emqx-data:/opt/emqx/data
       - vol-emqx-log:/opt/emqx/log
 
-  
+
     links:
       - mongo
 
@@ -111,4 +112,4 @@ services:
 
       EMQX_LOADED_PLUGINS: "emqx_recon,emqx_retainer,emqx_management,emqx_dashboard,emqx_auth_mongo"
 
-      EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS: 100
+      EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS: 1000
