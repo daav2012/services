@@ -36,7 +36,7 @@ services:
     environment:
       TZ: "${TZ}"
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_USERNAME}"
-       MONGO_INITDB_ROOT_PASSWORD: "${MONGO_PASSWORD}"
+      MONGO_INITDB_ROOT_PASSWORD: "${MONGO_PASSWORD}"
     volumes:
       - ./mongodata:/data/db
     ports:
@@ -72,15 +72,17 @@ services:
 
       TZ: "${TZ}"
 
-         # DEFAULT DASH PASS
+     
+      # DEFAULT DASH PASS
       EMQX_DASHBOARD__DEFAULT_USER__PASSWORD: "${EMQX_DEFAULT_USER_PASSWORD}"
 
       # DEFAULT APP SECRET
-      EMQX_MANAGEMENT__DEFAULT_APPLICATION__SECRET: "${EMQX_DEFAULT_APPLICATION_SE$
+      EMQX_MANAGEMENT__DEFAULT_APPLICATION__SECRET: "${EMQX_DEFAULT_APPLICATION_SECRET}"
+
       EMQX_ALLOW_ANONYMOUS: "false"
       EMQX_NOMATCH: "deny"
-      
-       # MONGO CONNECTION
+
+      # MONGO CONNECTION
       EMQX_AUTH__MONGO__TYPE: single
       EMQX_AUTH__MONGO__TOPOLOGY__POOL_SIZE: 1
       EMQX_AUTH__MONGO__TOPOLOGY__MAX_OVERFLOW: 0
@@ -104,11 +106,10 @@ services:
       EMQX_AUTH__MONGO__AUTH_QUERY__PASSWORD_FIELD: "password"
       EMQX_AUTH__MONGO__AUTH_QUERY__SELECTOR: "username=%u"
 
-       ## Enable ACL query.
+      ## Enable ACL query.
       #Access control list
       EMQX_AUTH__MONGO__ACL_QUERY: "on"
       EMQX_AUTH__MONGO__ACL_QUERY__COLLECTION: "emqxauthrules"
       EMQX_AUTH__MONGO__ACL_QUERY__SELECTOR: "username=%u"
 
-      EMQX_LOADED_PLUGINS: "emqx_recon,emqx_retainer,emqx_management,emqx_dashboar$
-      EMQX_LISTENER__TCP__EXTERNAL__MAX_CONNECTIONS: 1000
+      EMQX_LOADED_PLUGINS: "emqx_recon,emqx_retainer,emqx_management,emqx_dashboard,emqx_auth_mongo"
