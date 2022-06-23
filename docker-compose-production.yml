@@ -12,7 +12,7 @@ services:
   node:
     container_name: node
     image: "node:14"
-
+    
     working_dir: /home/node/app
     volumes:
       - ./app/:/home/node/app
@@ -25,14 +25,13 @@ services:
       - emqx
       - mongo
 
-    command: sh -c " npm run build && npm run start"
+    command: sh -c "echo 'delaying 30 seconds' && sleep 30 && npm run start"
     #command: sh -c "npm install"
 
   mongo:
     container_name: mongo
     image: mongo:4.4
-
-
+    
     environment:
       TZ: "${TZ}"
       MONGO_INITDB_ROOT_USERNAME: "${MONGO_USERNAME}"
@@ -46,12 +45,11 @@ services:
     container_name: emqx
     image: emqx/emqx:4.2.3
     expose:
-      -8085
+      - 8085
 
     ports:
       - 18083:18083
       - 1883:1883
-      - 8883:8883
       - 8083:8083
       - 8085:8081
 
@@ -72,7 +70,6 @@ services:
 
       TZ: "${TZ}"
 
-     
       # DEFAULT DASH PASS
       EMQX_DASHBOARD__DEFAULT_USER__PASSWORD: "${EMQX_DEFAULT_USER_PASSWORD}"
 
@@ -106,7 +103,7 @@ services:
       EMQX_AUTH__MONGO__AUTH_QUERY__PASSWORD_FIELD: "password"
       EMQX_AUTH__MONGO__AUTH_QUERY__SELECTOR: "username=%u"
 
-  ## Enable ACL query.
+      ## Enable ACL query.
       #Access control list
       EMQX_AUTH__MONGO__ACL_QUERY: "on"
       EMQX_AUTH__MONGO__ACL_QUERY__COLLECTION: "emqxauthrules"
